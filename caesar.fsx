@@ -24,23 +24,22 @@ let getIndex (c:char) =
 let modulo (n:int) (m:int)= ((n % m) + m) % m
 
 let encryptIdx idx shift =
-    (idx + shift) % 26
+    (idx + shift) % alphabet.Length
 
-let decryptIdx (idx:int) (shift:int) = 
+let decryptIdx idx shift = 
     let newIdx = idx - shift
-    modulo newIdx 26
+    modulo newIdx alphabet.Length
 
-let getShifted charIdx shift shiftOperation =
+let getShifted shift shiftOperation charIdx =
     match charIdx with
     | _, Some idx -> alphabet.[shiftOperation idx shift]
     | c, None -> c
 
 let operateCaesar operation shift text =
-    text
-    |> Seq.map getIndex
-    |> Seq.map (fun pair -> getShifted pair shift operation)
-    |> Seq.map string
-    |> String.concat ""
+    (Seq.map getIndex 
+    >> Seq.map (getShifted shift operation)
+    >> Seq.map string) text
+    |> String.concat ""    
 
 let encryptcaesar shift text = operateCaesar encryptIdx shift text
 let decryptcaesar shift text = operateCaesar decryptIdx shift text
