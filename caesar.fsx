@@ -30,12 +30,15 @@ let decryptIdx (idx:int) (shift:int) =
     let newIdx = idx - shift
     modulo newIdx 26
 
+let getShifted charIdx shift shiftOperation =
+    match charIdx with
+    | _, Some idx -> alphabet.[shiftOperation idx shift]
+    | c, None -> c
+
 let operateCaesar operation shift text =
     text
     |> Seq.map getIndex
-    |> Seq.map (fun charIdx -> match charIdx with
-                                | _, Some idx -> alphabet.[operation idx shift]
-                                | c, None -> c)
+    |> Seq.map (fun pair -> getShifted pair shift operation)
     |> Seq.map string
     |> String.concat ""
 
