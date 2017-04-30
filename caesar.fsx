@@ -12,7 +12,7 @@ open System
 
 let alphabet = [| 'A' .. 'Z' |]
 
-let getIndex (c:char) =
+let tryGetIndex (c:char) =
     let idx =   alphabet
                 |> Array.tryFindIndex (fun t -> t = (Char.ToUpper c))
     (c, idx)
@@ -36,7 +36,7 @@ let getShifted shift shiftOperation charIdx =
     | c, None -> c
 
 let operateCaesar operation shift text =
-    (Seq.map getIndex 
+    (Seq.map tryGetIndex 
     >> Seq.map (getShifted shift operation)
     >> Seq.map string) text
     |> String.concat ""    
@@ -45,5 +45,4 @@ let encryptcaesar shift text = operateCaesar encryptIdx shift text
 let decryptcaesar shift text = operateCaesar decryptIdx shift text
 
 let enc = "hello world" |> encryptcaesar 500
-
 let dec = enc |> decryptcaesar 500

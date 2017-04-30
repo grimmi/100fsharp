@@ -13,15 +13,9 @@ cache.Add(2L, 1L)
 let rec fib x = 
     let cached = cache.TryGetValue x
     match cached with
-    | true, v ->
-        printfn "got cached result: %d" v
-        v
+    | true, v -> v
     | false, _ -> 
-        let computed = 
-            match x with
-            | 0L | 1L | 2L -> 1L
-            | _ -> fib (x-1L) + fib (x-2L) 
-        printfn "computed new value: %d" computed
+        let computed = fib (x-1L) + fib (x-2L) 
         cache.Add(x, computed)
         computed
 
