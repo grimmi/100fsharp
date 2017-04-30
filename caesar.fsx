@@ -43,8 +43,8 @@ let operateCaesar operation shift text =
     |> Seq.map (tryGetIndex >> getShifted shift operation >> string)
     |> String.concat ""  
 
-let encryptcaesar shift text = operateCaesar encryptIdx shift text
-let decryptcaesar shift text = operateCaesar decryptIdx shift text
+let encryptcaesar = operateCaesar encryptIdx
+let decryptcaesar = operateCaesar decryptIdx
 
 let enc = "hello world" |> encryptcaesar 13
 let dec = enc |> decryptcaesar 13
