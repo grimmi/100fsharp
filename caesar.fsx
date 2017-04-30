@@ -6,6 +6,9 @@
     So key 2 encrypts "HI" to "JK", but key 20 encrypts "HI" to "BC". 
     This simple "monoalphabetic substitution cipher" provides almost no security, because an attacker who has the encoded message 
     can either use frequency analysis to guess the key, or just try all 25 keys.
+
+    changed requirements: 
+        - shift can be any number, not only 1 - 25
 *)
 
 open System
