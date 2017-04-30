@@ -2,65 +2,48 @@
     Graph from links - Create a program that will create a graph or network from a series of links.
 *)
 
-// let's assume an undirected graph at first
+// let's assume a directed graph at first
 
 open System.Collections.Generic
 
-type Node = { Id : int; Nodes : Node list }
+type Node = { Id : int; Nodes : int list }
 
-type Link = { Node1 : Node; Node2 : Node }
+type Link = { From : int; To : int }
 
-let isLinkedTo n m =
-    match n.Nodes |> Seq.exists (fun node -> node.Id = m.Id) with
-    |true -> true
-    |false -> m.Nodes |> Seq.exists (fun node -> node.Id = n.Id)
+let isLinkedTo id node =
+    node.Nodes
+    |> Seq.exists (fun node -> node = id)
 
-let addLink (n:Node) (m:Node) = 
-    if isLinkedTo n m then
+let addLink (id:int) (m:Node) = 
+    if m |> isLinkedTo id then
         m
     else
-        { m with Nodes = (m.Nodes |> List.append [n]) }
+        { m with Nodes = (m.Nodes |> List.append [id]) }
 
-let addNodes (nodes: Node seq) (graph:Dictionary<int,Node>) =
-    Seq.fold (fun (g:Dictionary<int,Node>) (n: Node) -> 
-        match g.TryGetValue n.Id with
+let addNodes nodes graph =
+    Seq.fold (fun (g:Dictionary<int,Node>) (id: int) -> 
+        match g.TryGetValue id with
         |true, _ -> g
         |false, _ -> 
-            g.Add(n.Id, n)
+            g.Add(id, {Id = id; Nodes = [] })
             g) graph nodes
 
-let tryGetNode (graph:Dictionary<int,Node>) id =
+let tryGetNode id (graph:Dictionary<int,Node>) =
     graph.TryGetValue id
 
 let graphFromLinks links =
-    let graph = Dictionary<int, Node>()
     
-    let nodes = links
-                |> Seq.collect (fun l -> [l.Node1;l.Node2])
-    
-    let graphWithNodes = graph |> addNodes nodes
+    let graphWithNodes = 
+        Dictionary<int,Node>() 
+        |> addNodes (links |> Seq.collect (fun link -> [link.From; link.To]))
 
-    links
-    |> Seq.map (fun l ->
-        printfn "matching %d" l.Node1.Id
-        match tryGetNode graphWithNodes l.Node1.Id with
+    List.fold (fun graph l ->
+        match graph |> tryGetNode l.From with
         |true, node -> 
-            let newNodeWithLinks = node |> addLink l.Node2
-            printfn "new node: %A" newNodeWithLinks
-            graphWithNodes.[l.Node1.Id] <- newNodeWithLinks
-            graphWithNodes
-        |false, _ -> 
-            printfn "FALSE!!!!"
-            graphWithNodes)
-    |> ignore
+            graph.[l.From] <- node |> addLink l.To
+            graph
+        |false, _ -> graph) graphWithNodes links
 
-    graphWithNodes
-
-let myLinks = [{Node1 = {Id = 1; Nodes = []}; Node2 = {Id = 2; Nodes=[]}}]
+let myLinks = [{From = 1; To = 2;};{From = 3; To = 2};{From = 1; To = 3};{From = 3; To = 1}]
 
 let g = graphFromLinks myLinks
-
-let n1 = { Id = 1; Nodes = [] }
-let n2 = { Id = 2; Nodes = [] }
-
-let nx = n1 |> addLink n2
