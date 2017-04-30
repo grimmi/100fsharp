@@ -12,7 +12,7 @@ open System
 
 let alphabet = [| 'A' .. 'Z' |]
 
-let tryGetIndex (c:char) =
+let tryGetIndex c =
     let idx =   alphabet
                 |> Array.tryFindIndex (fun t -> t = (Char.ToUpper c))
     (c, idx)
@@ -21,7 +21,7 @@ let tryGetIndex (c:char) =
 // f#: -3 % 26 -> -3
 // 'ours': modulo -3 26 -> 23
 // taken from here: http://gettingsharper.de/2012/02/28/how-to-implement-a-mathematically-correct-modulus-operator-in-f/
-let modulo (n:int) (m:int)= ((n % m) + m) % m
+let modulo n m = ((n % m) + m) % m
 
 let encryptIdx idx shift =
     (idx + shift) % alphabet.Length
