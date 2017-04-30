@@ -36,6 +36,9 @@ let getShifted shift shiftOperation charIdx =
     | c, None -> c
 
 let operateCaesar operation shift text =
+    if shift < 0 then
+        raise (ArgumentException "only positive shifts are supported")
+
     (Seq.map tryGetIndex 
     >> Seq.map (getShifted shift operation)
     >> Seq.map string) text
@@ -44,5 +47,5 @@ let operateCaesar operation shift text =
 let encryptcaesar shift text = operateCaesar encryptIdx shift text
 let decryptcaesar shift text = operateCaesar decryptIdx shift text
 
-let enc = "hello world" |> encryptcaesar 500
-let dec = enc |> decryptcaesar 500
+let enc = "hello world" |> encryptcaesar 13
+let dec = enc |> decryptcaesar 13
