@@ -23,13 +23,15 @@ let tryGetIndex c =
 // taken from here: http://gettingsharper.de/2012/02/28/how-to-implement-a-mathematically-correct-modulus-operator-in-f/
 let modulo n m = ((n % m) + m) % m
 
-let encryptIdx idx shift =
+let shiftIdx idx shift = 
     let newIdx = idx + shift
     modulo newIdx alphabet.Length
 
+let encryptIdx idx shift =
+    shiftIdx idx shift
+
 let decryptIdx idx shift = 
-    let newIdx = idx - shift
-    modulo newIdx alphabet.Length
+    shiftIdx idx (-shift)
 
 let getShifted shift shiftOperation charIdx =
     match charIdx with
