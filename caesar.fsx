@@ -39,10 +39,9 @@ let getShifted shift shiftOperation charIdx =
     | c, None -> c
 
 let operateCaesar operation shift text =
-    (Seq.map tryGetIndex 
-    >> Seq.map (getShifted shift operation)
-    >> Seq.map string) text
-    |> String.concat ""    
+    text
+    |> Seq.map (tryGetIndex >> getShifted shift operation >> string)
+    |> String.concat ""  
 
 let encryptcaesar shift text = operateCaesar encryptIdx shift text
 let decryptcaesar shift text = operateCaesar decryptIdx shift text
