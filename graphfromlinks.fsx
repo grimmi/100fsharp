@@ -15,10 +15,9 @@ let isLinkedTo id node =
     |> Seq.exists (fun node -> node = id)
 
 let addLink (id:int) (m:Node) = 
-    if m |> isLinkedTo id then
-        m
-    else
-        { m with Nodes = (m.Nodes |> List.append [id]) }
+    match m |> isLinkedTo id with
+    | true -> m
+    | false -> { m with Nodes = (m.Nodes |> List.append [id])}
 
 let addNodes nodes graph =
     Seq.fold (fun (g:Dictionary<int,Node>) (id: int) -> 
