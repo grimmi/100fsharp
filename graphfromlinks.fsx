@@ -37,10 +37,10 @@ let graphFromLinks links =
         Dictionary<int,Node>() 
         |> addNodes (links |> Seq.collect (fun link -> [link.From; link.To]))
 
-    List.fold (fun graph l ->
-        match graph |> tryGetNode l.From with
+    List.fold (fun graph link ->
+        match graph |> tryGetNode link.From with
         |true, node -> 
-            graph.[l.From] <- node |> addLink l.To
+            graph.[link.From] <- node |> addLink link.To
             graph
         |false, _ -> graph) graphWithNodes links
 
