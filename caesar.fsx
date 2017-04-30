@@ -24,7 +24,8 @@ let tryGetIndex c =
 let modulo n m = ((n % m) + m) % m
 
 let encryptIdx idx shift =
-    (idx + shift) % alphabet.Length
+    let newIdx = idx + shift
+    modulo newIdx alphabet.Length
 
 let decryptIdx idx shift = 
     let newIdx = idx - shift
@@ -36,9 +37,6 @@ let getShifted shift shiftOperation charIdx =
     | c, None -> c
 
 let operateCaesar operation shift text =
-    if shift < 0 then
-        raise (ArgumentException "only positive shifts are supported")
-
     (Seq.map tryGetIndex 
     >> Seq.map (getShifted shift operation)
     >> Seq.map string) text
