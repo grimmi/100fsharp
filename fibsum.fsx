@@ -20,17 +20,15 @@ open System
 open System.Collections.Generic
 open Fibonacci
 
-let infinite = Seq.initInfinite(fun idx -> uint64(idx))
+let productFib (n:uint64) =
 
-let fibSums ns = ns |> Seq.map (fun idx -> (Fibonacci.fib(idx), Fibonacci.fib(idx+1UL)))
+    let rec fibPair x = 
+        let f1 = Fibonacci.fib x
+        let f2 = Fibonacci.fib (x + 1UL)
+        match (f1 * f2) with
+        | prod when prod < n -> fibPair (x+1UL)
+        | _ -> f1, f2
 
-let productFib (n:uint64) = 
-    let f1, f2 = infinite 
-                 |> fibSums
-                 |> Seq.skipWhile(fun (f1, f2) -> (f1 * f2) < n)
-                 |> Seq.take 1
-                 |> Seq.last
-
-    (f1, f2, ((f1 * f2) = n))
-
+    let f1, f2 = fibPair 1UL
+    (f1, f2, (f1 * f2) = n)
 let p1 = productFib 74049690UL
