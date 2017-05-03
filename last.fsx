@@ -13,5 +13,9 @@ let last xs =
     |[] -> None
     |_ -> xs |> Seq.last |> Some
 
+// already exists as a built-in
+let lastWithTry xs = 
+    List.tryLast xs
+
 let x = [1;2;3]
 let lx = x |> last
