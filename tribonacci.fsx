@@ -15,19 +15,19 @@
 *)
 
 let trib signature n = 
-    let a,b,c = match signature with
+    let _,_,t = match signature with
                 |[x;y;z] ->
                     [ 1 .. n ]
                     |> Seq.fold(fun (a,b,c) idx -> (b, c, a+b+c)) (x,y,z)        
                 |_ -> (0,0,0)
-    c
+    t
 
 let tribonacci signature n = 
-    if n = 0 then
-        []
-    else
-        [ 1 .. n - 3]
-        |> List.map(fun x -> trib signature x)
-        |> List.append signature
+    match n with
+    | 0 -> []
+    | 1 | 2 | 3 -> signature |> List.take n
+    | _ ->  [ 1 .. n - 3]
+            |> List.map(fun x -> trib signature x)
+            |> List.append signature
 
 let result = tribonacci [1;1;1] 10                        
