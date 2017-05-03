@@ -19,6 +19,11 @@ let rec fib x =
         cache.Add(x, computed)
         computed
 
+let fibiter n =
+    [ 2 .. n ]
+    |> Seq.fold (fun (a,b) _ -> (b, a+b)) (0, 1)
+    |> snd
+
 let numbers =
     [ 1UL .. 75UL ]
     |> Seq.map fib
