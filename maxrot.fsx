@@ -11,32 +11,22 @@
     taken from: https://www.codewars.com/kata/56a4872cbb65f3a610000026/train/fsharp
 *)
 
-let maxrot (n:int) =
-    let rot (x:int) (n:int) = 
-        let s = n |> string
-
-        let keep = s |> Seq.take x
-
-        let mix = s 
-                    |> Seq.skip x
-                    |> Seq.mapi(fun idx t -> match idx with
-                                             |0 -> (999, t |> string)
-                                             |_ -> (idx, t |> string))
-                    |> Seq.sortBy(fun (idx,t) -> idx)
-                    |> Seq.map(fun (idx, t) -> t)
-                    |> String.concat ""
-
-        let combine = (keep |> Seq.map (string) |> String.concat "") + mix
-        combine |> int
+let maxRot (n:int) =
+    // we're treating all numbers as string so as to not having to specially handle numbers
+    // that start with 0
+    let rot shift number = 
+        let keep, mix = (number |> Seq.take shift, number |> Seq.skip shift)
+        let combined = Seq.concat [keep;  mix |> Seq.skip 1; seq { yield (mix |> Seq.head) }]
+                       |> Seq.map (string)
+                       |> String.concat ""
+        printfn "combined: %s" combined
+        combined
 
     let length = (n |> string |> String.length) - 1
-    let numbers = 
-        [ 0 .. length ]
-        |> Seq.fold(fun (ns:int list) (idx:int) -> 
-                                let (x:int) = rot idx (ns |> List.head)
-                                ns |> List.append [x]) [n]
+    
+    [ 0 .. length ]
+    |> Seq.fold(fun ns idx -> ns |> List.append [rot idx (ns |> List.head)]) [n|>string]
+    |> Seq.map (int)
+    |> Seq.max    
 
-    numbers |> Seq.max
-
-
-let m = maxrot 38458215
+let m = maxRot 56789
