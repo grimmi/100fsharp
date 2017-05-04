@@ -8,10 +8,10 @@
 (*
     input code for hackerrank:
     let inputs = 
-    Seq.initInfinite (fun _ -> System.Console.ReadLine())
-    |> Seq.takeWhile (fun s -> s <> null)
-    |> Seq.map int
-    |> List.ofSeq
+        Seq.initInfinite (fun _ -> System.Console.ReadLine())
+        |> Seq.takeWhile (fun s -> s <> null)
+        |> Seq.map int
+        |> List.ofSeq
     let s, xs = List.head inputs, List.tail inputs
 
     repeatList xs s
