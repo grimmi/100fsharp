@@ -8,7 +8,7 @@ let toInitials (name:string) =
     // |> Seq.map(fun part -> sprintf "%c." part.[0])
     // |> String.concat " "
 
-    Seq.fold (fun initials n -> sprintf "%s %c." initials (n |> Seq.head)) "" (name.Split ' ')
+    (Seq.fold (fun initials n -> sprintf "%s %c." initials (n |> Seq.head)) "" (name.Split ' ')).Trim()
 
 let i = "Jack Bauer" |> toInitials
 let r = "Robert C. Martin" |> toInitials    
