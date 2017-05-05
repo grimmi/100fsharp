@@ -4,12 +4,11 @@
 *)
 
 let toInitials (name:string) =
-    (name.Split ' ')
-    |> Seq.map(fun part -> (part.[0] |> string) + ".")
-    |> String.concat " "
+    // (name.Split ' ')
+    // |> Seq.map(fun part -> sprintf "%c." part.[0])
+    // |> String.concat " "
 
-    // let initials = Seq.fold (fun initials n -> initials + " " + (n |> Seq.head |> string) + ".") "" (name.Split ' ')
-    // initials.Trim()
+    Seq.fold (fun initials n -> sprintf "%s %c." initials (n |> Seq.head)) "" (name.Split ' ')
 
 let i = "Jack Bauer" |> toInitials
 let r = "Robert C. Martin" |> toInitials    
