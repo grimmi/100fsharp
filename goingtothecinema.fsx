@@ -20,10 +20,21 @@ let calcCard start ticket perc n =
     |> Seq.fold(fun sum idx -> sum + (float(ticket) * (pown perc idx))) (float(start))
 
 let movie (card:int) (ticket:int) (perc:float) : int = 
-    let idx, maxcard, maxticket = Seq.initInfinite id
-                                    |> Seq.map(fun idx -> ((idx, calcCard card ticket perc idx, ticket * idx)))
-                                    |> Seq.skipWhile(fun (idx, sumcard, sumticket) -> ceil(sumcard) >= float(sumticket))
-                                    |> Seq.head
-    idx
+    // let idx, maxcard, maxticket = Seq.initInfinite id
+    //                                 |> Seq.map(fun idx -> ((idx, calcCard card ticket perc idx, ticket * idx)))
+    //                                 |> Seq.skipWhile(fun (idx, sumcard, sumticket) -> ceil(sumcard) >= float(sumticket))
+    //                                 |> Seq.head
+    // idx
 
-let m = movie 0 10 0.95
+    let rec loop (cardsum, ticketsum, count) =
+        let cs = cardsum + (float(ticket) * (pown perc count))
+        let ts = ticket * count
+        match ceil(cs) >= float(ts) with
+        |true -> loop(cs, ts, (count + 1))
+        |false -> count
+
+    loop(float(card), 0, 1)
+
+
+
+let m = movie 250 20 0.9
