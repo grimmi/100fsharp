@@ -1,3 +1,7 @@
+(*
+    **Prime Factorization** - Have the user enter a number and find all Prime Factors (if there are any) and display them.
+*)
+
 let primefactors x = 
     let nextfactor y = 
         if y % 2UL = 0UL then
