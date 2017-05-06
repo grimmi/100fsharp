@@ -1,10 +1,10 @@
 let primefactors x = 
     let nextfactor y = 
-        if y % 2 = 0 then
-            2
+        if y % 2UL = 0UL then
+            2UL
         else
-            let factor = [ 3 .. 2 .. int(ceil(sqrt(float(y)))) ]
-                         |> Seq.skipWhile(fun idx -> y % idx <> 0)
+            let factor = [ 3UL .. 2UL .. uint64(ceil(sqrt(float(y)))) ]
+                         |> Seq.skipWhile(fun idx -> y % idx <> 0UL)
                          |> Seq.truncate 1
             match factor |> Seq.length with
             | 1 -> factor |> Seq.head
@@ -12,9 +12,9 @@ let primefactors x =
     
     let rec getfactors x fs =
         match nextfactor x with
-        |0|1 -> fs
+        |0UL|1UL -> fs
         |f -> (fs |> List.append [f]) |> getfactors (x / f)
         
     [] |> getfactors x
 
-let z6 = primefactors 656317973
+let z6 = primefactors 3246855154891515UL
