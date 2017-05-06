@@ -4,10 +4,10 @@ let primefactors x =
             2UL
         else
             let factor = [ 3UL .. 2UL .. uint64(ceil(sqrt(float(y)))) ]
-                         |> Seq.skipWhile(fun idx -> y % idx <> 0UL)
-                         |> Seq.truncate 1
-            match factor |> Seq.length with
-            | 1 -> factor |> Seq.head
+                         |> List.skipWhile(fun idx -> y % idx <> 0UL)
+                         |> List.truncate 1
+            match factor |> List.length with
+            | 1 -> factor |> List.head
             | _ -> y
     
     let rec getfactors x fs =
@@ -17,4 +17,6 @@ let primefactors x =
         
     [] |> getfactors x
 
-let z6 = primefactors 3246855154891515UL
+#time
+let z6 = primefactors 167942357145896574UL
+#time
