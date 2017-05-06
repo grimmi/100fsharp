@@ -3,24 +3,42 @@
 *)
 
 let primefactors x = 
-    let nextfactor y = 
-        if y % 2UL = 0UL then
-            2UL
+    let check = seq { let limit = uint64((ceil(sqrt(float(x)))));
+                      for x in Seq.concat [seq { yield 2UL }; { 3UL .. 2UL .. limit }] do
+                        yield x }
+
+    let getFirstOrDefault def ns =
+        if ns |> Seq.isEmpty then
+            def
         else
-            let factor = [ 3UL .. 2UL .. uint64(ceil(sqrt(float(y)))) ]
-                         |> List.skipWhile(fun idx -> y % idx <> 0UL)
-                         |> List.truncate 1
-            match factor |> List.length with
-            | 1 -> factor |> List.head
-            | _ -> y
+            ns |> Seq.head
+
+    let nextfactor x = 
+        match x with
+        |1UL -> x
+        |_ -> check
+              |> Seq.skipWhile(fun idx -> x % idx <> 0UL)
+              |> getFirstOrDefault x
+            
     
-    let rec getfactors x fs =
-        match nextfactor x with
-        |0UL|1UL -> fs
-        |f -> (fs |> List.append [f]) |> getfactors (x / f)
-        
+    let rec getfactors x factors =
+        match nextfactor x  with
+        |1UL -> factors
+        |factor -> (factors |> List.append [factor]) |> getfactors (x / factor)
+    
     [] |> getfactors x
 
 #time
-let z6 = primefactors 167942357145896574UL
+let smallFactors = primefactors 3672215407307975928UL
+printfn "smallfactors: %A" smallFactors
 #time
+#time
+let bigPrimeFactor = primefactors 18446744073709551556UL
+printfn "bigfactors: %A" bigPrimeFactor
+#time
+#time
+let biggestuint64Prime = primefactors 18446744073709551557UL
+printfn "biggestprime: %A" biggestuint64Prime
+#time
+
+let ePrime = primefactors 600851475143UL
