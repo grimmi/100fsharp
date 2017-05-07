@@ -13,7 +13,7 @@ let processSieve (x:int) (sieve: (int * bool)[]) =
         |>Seq.iter(fun n -> sieve.[n] <- (n, false))
         sieve.[x] <- (x, true)
 
-let doSieve x =
+let sieve x =
     let sieve = [| 0 .. x |] |> Array.map(fun idx -> (idx, true))
     sieve.[0] <- (0, false)
     sieve.[1] <- (1, false)
@@ -27,7 +27,7 @@ let doSieve x =
     sieve
 
 #time
-let sieved = doSieve 10000000
+let sieved = sieve 10000000
 let primes = sieved |> Array.filter(fun (idx, prime) -> prime) |> Array.map(fun (idx, prime) -> idx)
 #time
 
