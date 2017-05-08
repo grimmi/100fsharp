@@ -2,6 +2,8 @@
     **Sieve of Eratosthenes** - 
     The sieve of Eratosthenes is one of the most efficient ways to find all of the smaller primes (below 10 million or so). 
 *)
+module Eratosthenes
+
 let processSieve (x:int) (sieve: (int * bool)[]) = 
     let limit = (sieve |> Seq.length) - 1
     let xLimit = pown (x |> int64) 2
@@ -26,9 +28,9 @@ let sieve x =
 
     sieve
 
-#time
-let sieved = sieve 10000000
-let primes = sieved |> Array.filter(fun (idx, prime) -> prime) |> Array.map(fun (idx, prime) -> idx)
-#time
+// #time
+// let sieved = sieve 10000000
+// let primes = sieved |> Array.filter(fun (idx, prime) -> prime) |> Array.map(fun (idx, prime) -> idx)
+// #time
 
-printfn "%d primzahlen gefunden" (primes |> Array.length)
+// printfn "%d primzahlen gefunden" (primes |> Array.length)
