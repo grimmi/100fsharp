@@ -17,11 +17,11 @@ type Shape =
 
 let getTotalArea shapes =
     shapes
-    |> Seq.sumBy(fun shape -> match shape with
-                              |Triangle(baseLength, height) -> 0.5 * (baseLength * height)
-                              |Square(side) -> side * side
-                              |Rectangle(height, width) -> height * width
-                              |Circle(radius) -> (pown radius 2) * System.Math.PI)
+    |> Seq.sumBy(function
+                 |Triangle(baseline, height) -> 0.5 * (baseline * height)
+                 |Square(side) -> side * side
+                 |Rectangle(height, width) -> height * width
+                 |Circle(radius) -> (pown radius 2) * System.Math.PI)
     |> (fun sum -> System.Math.Round(sum, 2))
 
 
