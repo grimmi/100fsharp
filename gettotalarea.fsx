@@ -10,19 +10,19 @@
 *)
 
 type Shape =
-|Triangle of double * double
-|Square of double
-|Rectangle of double * double
-|Circle of double
+|Triangle of baseline : float * height : float
+|Square of side : float
+|Rectangle of a : float * b : float
+|Circle of radius : float
 
 let getTotalArea shapes =
-    let areaSum = shapes
-                  |> Seq.sumBy(fun shape -> match shape with
-                                            |Triangle(baseLength, height) -> 0.5 * (baseLength * height)
-                                            |Square(side) -> side * side
-                                            |Rectangle(height, width) -> height * width
-                                            |Circle(radius) -> (pown radius 2) * System.Math.PI)
-    System.Math.Round(areaSum, 2)
+    shapes
+    |> Seq.sumBy(fun shape -> match shape with
+                              |Triangle(baseLength, height) -> 0.5 * (baseLength * height)
+                              |Square(side) -> side * side
+                              |Rectangle(height, width) -> height * width
+                              |Circle(radius) -> (pown radius 2) * System.Math.PI)
+    |> (fun sum -> System.Math.Round(sum, 2))
 
 
 // let triangleBase = 4.
