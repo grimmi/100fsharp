@@ -5,7 +5,7 @@
 
 let isPrime (n:int) =
     match n with
-    |1 -> false
+    |x when x < 2 -> false
     |_ -> [ 2 .. n / 2 ]
           |>Seq.fold(fun prime idx -> (prime && (n % idx <> 0))) true
 
