@@ -13,16 +13,13 @@
     taken from: https://www.codewars.com/kata/54da539698b8a2ad76000228/train/fsharp
 *)
 
-open System
-open System.Collections.Generic
-
 let isValidWalk walk =
-    let counts = walk |> List.countBy id |> dict
+    let counts = walk |> List.countBy id |> Map.ofList
     
-    let compare a b (cs : IDictionary<char,int>) =
-        match (cs.TryGetValue a, cs.TryGetValue b) with
-        |((true, acount),(true, bcount)) -> acount = bcount
-        |((false, _),(false, _)) -> true
+    let compare a b cs =
+        match (Map.tryFind a cs, Map.tryFind b cs) with
+        |(Some(acount),Some(bcount)) -> acount = bcount
+        |(None, None) -> true
         |_ -> false
 
     (walk |> Seq.length = 10)
