@@ -21,17 +21,14 @@
 open System
 
 let iterPi epsilon = 
-    let quotients = Seq.initInfinite(fun idx -> idx + 1)
-    let piRounded = Math.Round(Math.PI, 10)
 
-    let myPi, _, iterations = quotients
+    let myPi, _, iterations = Seq.initInfinite(fun idx -> idx + 1)
+                              |> Seq.map(fun idx -> (idx * 2) - 1)
                               |> Seq.scan(fun (pi, sign, _) idx -> 
-                                    let quotient = float((idx * 2) - 1)
-                                    let fsign = float(sign)
-                                    (pi + fsign * (1. / quotient), sign * -1, idx)) (0., 1, 0)
-                              |> Seq.skipWhile(fun (pi, _, idx) -> Math.Abs(piRounded - (pi*4.)) >= epsilon)
+                                    (pi + sign * (1. / float(idx)), sign * -1., idx)) (0., 1., 0)
+                              |> Seq.skipWhile(fun (pi, _, idx) -> Math.Abs(Math.PI - (pi*4.)) >= epsilon)
                               |> Seq.take 1
                               |> Seq.head
-    (iterations, myPi * 4.)
+    ((iterations + 1) / 2, myPi * 4.)
 
-let p = iterPi 0.0001
+let p = iterPi 0.01
