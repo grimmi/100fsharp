@@ -13,4 +13,13 @@ let getNumberOfSquares n =
     |> Seq.takeWhile(fun sum -> sum < n)
     |> Seq.length) - 1
 
-let x = getNumberOfSquares 2
+let getNumberOfSquaresRec n =
+    let rec numberOfSquares sum x =
+        let newSum = sum + (pown x 2)
+        match newSum with
+        |s when s < n -> numberOfSquares newSum (x+1)
+        |_ -> x - 1
+
+    numberOfSquares 0 n
+
+let x = getNumberOfSquaresRec 2
