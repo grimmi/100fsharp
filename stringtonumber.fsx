@@ -16,7 +16,7 @@ let stringToNumber (str:string) =
                      |> Seq.rev
                      |> Seq.takeWhile Char.IsDigit
                      |> Seq.map (string >> int)  // toString, because char |> int gives us the ascii code which we don't want
-                     |> Seq.fold(fun (sum, factor) d -> (sum + d * factor), factor * 10) (0, 1)
+                     |> Seq.fold(fun (sum, factor) d -> ((sum + d * factor), factor * 10)) (0, 1)
         sum
 
     let numberParts = str.Split([|CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator|], StringSplitOptions.RemoveEmptyEntries)
