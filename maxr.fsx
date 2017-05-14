@@ -5,18 +5,29 @@
 *)
 
 let maxR list =
-    let rec max mx (ns: 'a seq) =
+    let rec maxl mx ns =
         match ns with
-        |_ when ns |> Seq.isEmpty -> mx
-        |_ -> match ns |> Seq.head with
-                 |h when h > mx -> max h (ns |> Seq.skip 1)
-                 |_ -> max mx (ns |> Seq.skip 1)
+        |[] -> mx
+        |h::t -> match h with
+                 |_ when h > mx -> maxl h t
+                 |_ -> maxl mx t
 
     match list with
-    |_ when list |> Seq.isEmpty -> None
-    |_ -> Some(max (list |> Seq.head) list)
+    |[] -> None
+    |_ -> Some(maxl list.[0] list)
+     
+    // let rec max mx (ns: 'a seq) =
+    //     match ns with
+    //     |_ when ns |> Seq.isEmpty -> mx
+    //     |_ -> match ns |> Seq.head with
+    //              |h when h > mx -> max h (ns |> Seq.skip 1)
+    //              |_ -> max mx (ns |> Seq.skip 1)
 
-let m0:int option = maxR []
+    // match list with
+    // |_ when list |> Seq.isEmpty -> None
+    // |_ -> Some(max (list |> Seq.head) list)
+
+// let m0:int option = maxR []
 let m1 = maxR [1;2;51;8;3;9]
 
-let m2 = maxR [|4;5;5;6;|]
+// let m2 = maxR [|4;5;5;6;|]
