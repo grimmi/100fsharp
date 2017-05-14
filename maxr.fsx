@@ -5,13 +5,16 @@
 *)
 
 let maxR list =
-    let rec getmax (max, ns) =
+    let rec max mx ns =
         match ns with
-        |e when Seq.isEmpty e -> max
-        |_ -> match ns |> Seq.head with
-              |m when m > max -> getmax (m, ns |> Seq.skip 1)
-              |_ -> getmax (max, ns |> Seq.skip 1)
+        |[] -> mx
+        |h::t -> match h with
+                 |_ when h > mx -> max h t
+                 |_ -> max mx t
 
-    getmax ((list |> Seq.head), list)
+    match list with
+    |[] -> 0
+    |_ -> max (list |> List.head) list
 
+let m0:int = maxR []
 let m1 = maxR [1;2;51;8;3;9]
