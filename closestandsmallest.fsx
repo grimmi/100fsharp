@@ -48,13 +48,24 @@ let mindiff (tup: int*int*int) sums =
     (tup, minDiff)
 
 let getminPair tups =
-
     tups
     |> Seq.map(fun tup -> mindiff tup (tups |> Seq.filter(fun t -> t <> tup)))
 
-let closest (ns: int seq) =
-    ns |> digitSums |> getminPair
+let closest (ns:string) =
+    if String.IsNullOrWhiteSpace ns then
+        ([],[])
+    else
+        printfn "in: %s" ns
+        let ((w1, idx1, n1),(w2, idx2, n2)) =
+            (ns.Split ' ') 
+            |> Seq.map(string >> int)
+            |> digitSums 
+            |> getminPair 
+            |> Seq.sortBy(fun ((w1,idx1,n1),(w2,idx2,n2)) -> (Math.Abs(w1 - w2), (w1 + w2), Math.Min(idx1, idx2))) 
+            |> Seq.head
+        ([w1;idx1;n1],[w2;idx2;n2])
 
-let xs = closest [123;234;345];
+let xs = closest ""
+printfn "%A" xs
 
-xs |> Seq.iter(fun ((w1, idx1, n1),(w2, idx2, n2)) -> printfn "weight1: %d, idx1: %d, n1: %d | weight2: %d, idx2: %d, n2: %d" w1 idx1 n1 w2 idx2 n2)
+// xs |> Seq.iter(fun ((w1, idx1, n1),(w2, idx2, n2)) -> printfn "weight1: %d, idx1: %d, n1: %d | weight2: %d, idx2: %d, n2: %d" w1 idx1 n1 w2 idx2 n2)
