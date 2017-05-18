@@ -53,7 +53,13 @@ let smallest n =
         smallest
 
     let small = popped |> Seq.map getsmallest
-    small |> Seq.map(fun (j, i, p, r, n) -> (n, i, j)) |> Seq.sortBy id |> Seq.head
 
-let s = (smallest 261235L)
+    let (n, i, j) = small |> Seq.map(fun (j, i, p, r, n) -> (n, i, j)) |> Seq.sortBy id |> Seq.head
+
+    match (n, i, j) with
+    |(_, 0, _) -> (n, i, j + 1)
+    |_ -> (n, i, j)
+
+
+let s = (smallest 209917L)
 printfn "%A" s
