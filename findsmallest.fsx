@@ -33,8 +33,11 @@ let insertAt idx insert target =
 let popIndex idx number = 
     let indexed = number |> string |> Seq.mapi(fun i c -> (c, i))
 
-    let without = indexed
-                  |> Seq.filter(fun (c, i) -> i <> idx) |> Seq.map(fun (c, i) -> c) |> System.String.Concat |> int64
+    let without = indexed |> Seq.choose(fun (c, i) -> match i with
+                                                      |_ when i <> idx -> Some c
+                                                      |_ -> None)
+                          |> System.String.Concat |> int64
+                          
     let popped, _ = indexed |> Seq.item idx     
 
     (popped |> string |> int64, without)               
