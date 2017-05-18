@@ -40,17 +40,20 @@ let popIndex (idx:int) (number:int) =
     (popped |> string |> int, without)               
 
 let smallest n = 
-    let popped = [ 0 .. (n |> string |> String.length)]
+    let popped = [ 0 .. (n |> string |> String.length) - 1]
                  |> Seq.map(fun idx -> (idx, popIndex idx n))
 
-    // let getsmallest pl =
-    
-    let i, (p, r) = popped |> Seq.head
+    let getsmallest pl =    
+        let i, (p, r) = pl
 
-    let inserted = [0 .. (r |> string |> String.length)]
-                   |> Seq.map(fun j -> (j, i, p, r, insertAt j p r))
-                   |> Seq.sortBy(fun (j, i, p, r, n) -> (n, j))
-    inserted
+        let smallest = [0 .. (r |> string |> String.length)]
+                    |> Seq.map(fun j -> (j, i, p, r, insertAt j p r))
+                    |> Seq.sortBy(fun (j, i, p, r, n) -> (n, j))
+                    |> Seq.head
+        smallest
 
-let s = (smallest 12345) |> List.ofSeq
+    let small = popped |> Seq.map getsmallest
+    small |> Seq.map(fun (j, i, p, r, n) -> (n, i, j)) |> Seq.sortBy id |> Seq.head
+
+let s = (smallest 261235)
 printfn "%A" s
