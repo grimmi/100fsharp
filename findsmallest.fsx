@@ -28,16 +28,16 @@ let insertAt idx insert target =
     let firstPart = target |> string |> Seq.take idx |> System.String.Concat
     let secondPart = target |> string |> Seq.skip idx |> System.String.Concat
 
-    firstPart + (insert |> string) + secondPart |> int
+    firstPart + (insert |> string) + secondPart |> int64
 
-let popIndex (idx:int) (number:int) = 
+let popIndex idx number = 
     let indexed = number |> string |> Seq.mapi(fun i c -> (c, i))
 
     let without = indexed
-                  |> Seq.filter(fun (c, i) -> i <> idx) |> Seq.map(fun (c, i) -> c) |> System.String.Concat |> int
+                  |> Seq.filter(fun (c, i) -> i <> idx) |> Seq.map(fun (c, i) -> c) |> System.String.Concat |> int64
     let popped, _ = indexed |> Seq.item idx     
 
-    (popped |> string |> int, without)               
+    (popped |> string |> int64, without)               
 
 let smallest n = 
     let popped = [ 0 .. (n |> string |> String.length) - 1]
@@ -55,5 +55,5 @@ let smallest n =
     let small = popped |> Seq.map getsmallest
     small |> Seq.map(fun (j, i, p, r, n) -> (n, i, j)) |> Seq.sortBy id |> Seq.head
 
-let s = (smallest 261235)
+let s = (smallest 261235L)
 printfn "%A" s
