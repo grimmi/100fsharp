@@ -7,6 +7,8 @@
     3
     Prelude> myButLast ['a'..'z']
     'y'
+
+    taken from: https://wiki.haskell.org/99_questions/1_to_10
 *)
 
 let myButLast l =
