@@ -6,15 +6,22 @@
 open System
 open System.Net
 
+let urls = [|"http://www.fsharp.org";"http://microsoft.com";"http://fsharpforfunandprofit.com"|]
 
-let downloadData url = 
-    let client = new WebClient()
-    let getLength = async {
-                        let! response = client.AsyncDownloadData(Uri(url))
-                        return response |> Seq.length
-                    }
-    getLength
+let downloadData url = async {
+        use client = new WebClient()
+        let! response = client.AsyncDownloadData(Uri(url))
+        return response.Length
+    }
 
-let d = (downloadData "http://www.google.de") |> Async.RunSynchronously
+let downloadDataTask url = async{
+        use client = new WebClient()
+        let! response = client.DownloadDataTaskAsync(Uri(url)) |> Async.AwaitTask
+        return response.Length
+    }
 
-printfn "länge: %d" d
+let lengthsTask = urls |> Seq.map downloadDataTask |> Async.Parallel |> Async.StartAsTask
+let lengthsAsync = urls |> Seq.map downloadData |> Async.Parallel |> Async.RunSynchronously
+
+printfn "the lengths are: %A" lengthsTask.Result
+printfn "the lengths are: %A" lengthsAsync
