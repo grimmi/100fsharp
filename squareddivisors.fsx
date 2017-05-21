@@ -15,12 +15,22 @@
 *)
 
 let getDivisors n =
-    let step = match n % 2 with
-               |0 -> 1
-               |_ -> 2
-    [ 1 .. step .. n / 2 ]
-    |> Seq.filter(fun x -> n % x = 0)
-    |> Seq.append n
+
+    let belowRoot = 
+        [ 1 .. int(sqrt(float(n))) + 1]
+        |>List.filter(fun x -> n % x = 0)
+
+    let divisors = [ 0 .. belowRoot.Length - 1]
+                   |>Seq.collect(fun x -> 
+                       let item = belowRoot.[x]
+                       [0 .. belowRoot.Length - 1]
+                       |> Seq.map(fun y -> item * belowRoot.[y])
+                       |> Seq.filter(fun p -> n % p = 0))
+                   |>List.ofSeq 
+
+    [n] |> List.append divisors |> List.distinct
+
+let ds = getDivisors 42
 
 let isSquare x =
     let r = sqrt(float(x))
@@ -34,10 +44,10 @@ let listSquared n m =
 
 let x = listSquared 1 250
 printfn "%A" x
-let x1 = listSquared 42 250
-printfn "%A" x1
-let x2 = listSquared 250 500
-printfn "%A" x2
-let x3 = listSquared 300 600
-printfn "%A" x3
-let x4 = listSquared 1 100000
+// let x1 = listSquared 42 250
+// printfn "%A" x1
+// let x2 = listSquared 250 500
+// printfn "%A" x2
+// let x3 = listSquared 300 600
+// printfn "%A" x3
+// let x4 = listSquared 1 10000
