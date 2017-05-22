@@ -13,22 +13,21 @@
 
     taken from: https://www.codewars.com/kata/55aa075506463dac6600010d/train/fsharp
 *)
-
-let smallDivisors x =
-    let limit = int64(sqrt(float(x)))
-    [ 1L .. limit ]
-    |> List.filter(fun n -> x % n = 0L)
-    |> List.distinct
-
 let getDivisors x =
-    let small = smallDivisors x
-    List.concat[small; small |> List.map(fun d -> int64(x/d))] |> List.distinct |> List.sort
+    let limit = int64(sqrt(float(x)))
+    let small = [ 1L .. limit ]
+                |> List.filter(fun n -> x % n = 0L)
+                |> List.distinct
 
-let isSquare x =
-    let r = sqrt(float(x))
-    r = (float(r |> int))
+    List.concat[small; small |> List.map(fun d -> int64(x/d))] 
+    |> List.distinct 
+    |> List.sort
 
-let listSquared n m =
+let listSquared n m =    
+    let isSquare x =
+        let r = sqrt(float(x))
+        r = (float(r |> int))
+
     [ n .. m ]
     |>List.map(fun x -> (x, getDivisors x |> List.sumBy(fun d -> d*d)))
     |>List.filter(fun (x, s) -> isSquare s)
