@@ -15,17 +15,14 @@
 *)
 
 let smallDivisors x =
-    let limit = int(sqrt(float(x)))
-    [ 1 .. limit ]
-    |> List.filter(fun n -> x % n = 0)
+    let limit = int64(sqrt(float(x)))
+    [ 1L .. limit ]
+    |> List.filter(fun n -> x % n = 0L)
     |> List.distinct
-
-let bigDivisors x  = List.map(fun d -> int(x / d))
 
 let getDivisors x =
     let small = smallDivisors x
-    let big = small |> bigDivisors x
-    List.concat[small;big] |> List.distinct |> List.sort
+    List.concat[small; small |> List.map(fun d -> int64(x/d))] |> List.distinct |> List.sort
 
 let isSquare x =
     let r = sqrt(float(x))
@@ -36,5 +33,7 @@ let listSquared n m =
     |>List.map(fun x -> (x, getDivisors x |> List.sumBy(fun d -> d*d)))
     |>List.filter(fun (x, s) -> isSquare s)
 
-let x = listSquared 1 250
+#time
+let x = listSquared 1L 1000000L
+#time
 printfn "%A" x
