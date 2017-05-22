@@ -14,23 +14,18 @@
     taken from: https://www.codewars.com/kata/55aa075506463dac6600010d/train/fsharp
 *)
 
-let getDivisors n =
+let smallDivisors x =
+    let limit = int(sqrt(float(x)))
+    [ 1 .. limit ]
+    |> List.filter(fun n -> x % n = 0)
+    |> List.distinct
 
-    let belowRoot = 
-        [ 1 .. int(sqrt(float(n))) + 1]
-        |>List.filter(fun x -> n % x = 0)
+let bigDivisors x  = List.map(fun d -> int(x / d))
 
-    let divisors = [ 0 .. belowRoot.Length - 1]
-                   |>Seq.collect(fun x -> 
-                       let item = belowRoot.[x]
-                       [0 .. belowRoot.Length - 1]
-                       |> Seq.map(fun y -> item * belowRoot.[y])
-                       |> Seq.filter(fun p -> n % p = 0))
-                   |>List.ofSeq 
-
-    [n] |> List.append divisors |> List.distinct
-
-let ds = getDivisors 42
+let getDivisors x =
+    let small = smallDivisors x
+    let big = small |> bigDivisors x
+    List.concat[small;big] |> List.distinct |> List.sort
 
 let isSquare x =
     let r = sqrt(float(x))
@@ -38,16 +33,8 @@ let isSquare x =
 
 let listSquared n m =
     [ n .. m ]
-    |>Seq.map(fun x -> (x, getDivisors x |> Seq.sumBy(fun d -> d*d)))
-    |>Seq.filter(fun (x, s) -> isSquare s)
-    |>List.ofSeq
+    |>List.map(fun x -> (x, getDivisors x |> List.sumBy(fun d -> d*d)))
+    |>List.filter(fun (x, s) -> isSquare s)
 
 let x = listSquared 1 250
 printfn "%A" x
-// let x1 = listSquared 42 250
-// printfn "%A" x1
-// let x2 = listSquared 250 500
-// printfn "%A" x2
-// let x3 = listSquared 300 600
-// printfn "%A" x3
-// let x4 = listSquared 1 10000
