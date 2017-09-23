@@ -73,15 +73,15 @@ let distanceBetween start destination friendTowns (distances: Map<string, float>
     |(_, "") -> 0.0
     |(s, d) -> distance distances.[s] distances.[d]
 
-let tour(friends: string[]) (friendTowns: string[][]) (distances: Map<string, float>): float =
+let tour(friends: string[]) (friendTowns: string[][]) (distances: Map<string, float>): int =
    let distanceToFirstFriend = distances.[townOfFriend friends.[0] friendTowns]
    let lastVisitedFriend = friends |> Seq.where(fun friend -> distances |> Map.containsKey (townOfFriend friend friendTowns)) |> Seq.last
    let distanceToLastFriend = distances.[townOfFriend lastVisitedFriend friendTowns]
-   (friends 
+   ((friends 
    |> Seq.pairwise 
    |> Seq.sumBy(fun (f1, f2) -> distanceBetween f1 f2 friendTowns distances)) 
    + distanceToFirstFriend
-   + distanceToLastFriend
+   + distanceToLastFriend) |> int
 
 let friends1 = [|"A1"; "A2"; "A3"; "A4"; "A5"|]
 let fTowns1 = [| [|"A1"; "X1"|]; [|"A2"; "X2"|]; [|"A3"; "X3"|]; [|"A4"; "X4"|] |]
