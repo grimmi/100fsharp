@@ -3,9 +3,8 @@
 *)
 
 let primefactors x = 
-    let check = seq { let limit = uint64((ceil(sqrt(float(x)))));
-                      for x in Seq.concat [seq { yield 2UL }; { 3UL .. 2UL .. limit }] do
-                        yield x }
+    let limit = uint64((ceil(sqrt(float(x)))));
+    let check = seq { yield 2UL; yield! { 3UL .. 2UL .. limit} }
 
     let getFirstOrDefault def ns =
         if ns |> Seq.isEmpty then
