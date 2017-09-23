@@ -63,8 +63,7 @@ let townOfFriend friend (friendTowns: string[][]) =
     |true -> friendTowns.[friend |> friendIndex].[1]
     |false -> ""
 
-let distanceBetween start destination friendTowns (distances: Map<string, float>) =
-    printfn "friend1: "
+let distanceBetween friendTowns (distances: Map<string, float>) start destination =
     let startTown = townOfFriend start friendTowns
     let destinationTown = townOfFriend destination friendTowns
 
@@ -77,9 +76,10 @@ let tour(friends: string[]) (friendTowns: string[][]) (distances: Map<string, fl
    let distanceToFirstFriend = distances.[townOfFriend friends.[0] friendTowns]
    let lastVisitedFriend = friends |> Seq.where(fun friend -> distances |> Map.containsKey (townOfFriend friend friendTowns)) |> Seq.last
    let distanceToLastFriend = distances.[townOfFriend lastVisitedFriend friendTowns]
+   let getDistance = distanceBetween friendTowns distances
    ((friends 
    |> Seq.pairwise 
-   |> Seq.sumBy(fun (f1, f2) -> distanceBetween f1 f2 friendTowns distances)) 
+   |> Seq.fold(fun s (f1, f2) -> s + getDistance f1 f2) 0.)  // equivalent to |> Seq.sumBy(fun (f1, f2) -> getDistance f1 f2)
    + distanceToFirstFriend
    + distanceToLastFriend) |> int
 
