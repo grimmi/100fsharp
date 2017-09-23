@@ -52,36 +52,29 @@ open System
 let distance x1 x2 =
     //a² + b² = c² -> b² = c² - a²
     //x2 is the hypotenuse of a right triangle
-    sqrt((pown x2 2) - (pown x1 2))
+    sqrt(abs((pown x2 2) - (pown x1 2)))
 
-let friendIndex friend =
-    (friend |> String.filter Char.IsDigit |> int) - 1
+let tryFindTown (friendTowns: string[] seq) friend =
+    match (friendTowns |> Seq.tryFind(fun f -> f.[0] = friend)) with
+    |Some([|f; t|]) -> Some(t)
+    |_ -> None
 
-let townOfFriend friend (friendTowns: string[][]) =
-    let index = friendIndex friend
-    match (index < (friendTowns |> Array.length)) with 
-    |true -> friendTowns.[friend |> friendIndex].[1]
-    |false -> ""
-
-let distanceBetween friendTowns (distances: Map<string, float>) start destination =
-    let startTown = townOfFriend start friendTowns
-    let destinationTown = townOfFriend destination friendTowns
-
-    match (startTown, destinationTown) with
-    |("", _) -> 0.0
-    |(_, "") -> 0.0
-    |(s, d) -> distance distances.[s] distances.[d]
+let distanceBetween (distances: Map<string, float>) start destination =
+    match (start, destination) with
+    |(Some(s), (Some(d))) -> distance distances.[s] distances.[d]
+    |_ -> 0.0
 
 let tour(friends: string[]) (friendTowns: string[][]) (distances: Map<string, float>): int =
-   let distanceToFirstFriend = distances.[townOfFriend friends.[0] friendTowns]
-   let lastVisitedFriend = friends |> Seq.where(fun friend -> distances |> Map.containsKey (townOfFriend friend friendTowns)) |> Seq.last
-   let distanceToLastFriend = distances.[townOfFriend lastVisitedFriend friendTowns]
-   let getDistance = distanceBetween friendTowns distances
-   ((friends 
+   let towns = seq{ yield [|"A0"; "X0"|]; yield! friendTowns }
+   let friendsTown = tryFindTown towns
+   let completeTour = seq { yield "A0"; yield! friends |> Seq.filter(fun f -> match friendsTown f with
+                                                                              |None -> false
+                                                                              |Some(town) -> distances.ContainsKey town); yield "A0" }
+   let getDistance = distanceBetween (distances.Add("X0", 0.))
+   completeTour 
    |> Seq.pairwise 
-   |> Seq.fold(fun s (f1, f2) -> s + getDistance f1 f2) 0.)  // equivalent to |> Seq.sumBy(fun (f1, f2) -> getDistance f1 f2)
-   + distanceToFirstFriend
-   + distanceToLastFriend) |> int
+   |> Seq.sumBy(fun (f1, f2) -> getDistance (friendsTown f1) (friendsTown f2))
+   |> int
 
 let friends1 = [|"A1"; "A2"; "A3"; "A4"; "A5"|]
 let fTowns1 = [| [|"A1"; "X1"|]; [|"A2"; "X2"|]; [|"A3"; "X3"|]; [|"A4"; "X4"|] |]
