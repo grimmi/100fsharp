@@ -58,9 +58,13 @@ let friendIndex friend =
     (friend |> String.filter Char.IsDigit |> int) - 1
 
 let townOfFriend friend (friendTowns: string[][]) =
-    friendTowns.[friend |> friendIndex].[1]
+    let index = friendIndex friend
+    match (index < (friendTowns |> Array.length)) with 
+    |true -> friendTowns.[friend |> friendIndex].[1]
+    |false -> ""
 
 let distanceBetween start destination friendTowns (distances: Map<string, float>) =
+    printfn "friend1: "
     let startTown = townOfFriend start friendTowns
     let destinationTown = townOfFriend destination friendTowns
 
@@ -70,9 +74,14 @@ let distanceBetween start destination friendTowns (distances: Map<string, float>
     |(s, d) -> distance distances.[s] distances.[d]
 
 let tour(friends: string[]) (friendTowns: string[][]) (distances: Map<string, float>): float =
-   let friend1 = "A1"
-   let friend2 = "A2"
-   distanceBetween friend1 friend2 friendTowns distances
+   let distanceToFirstFriend = distances.[townOfFriend friends.[0] friendTowns]
+   let lastVisitedFriend = friends |> Seq.where(fun friend -> distances |> Map.containsKey (townOfFriend friend friendTowns)) |> Seq.last
+   let distanceToLastFriend = distances.[townOfFriend lastVisitedFriend friendTowns]
+   (friends 
+   |> Seq.pairwise 
+   |> Seq.sumBy(fun (f1, f2) -> distanceBetween f1 f2 friendTowns distances)) 
+   + distanceToFirstFriend
+   + distanceToLastFriend
 
 let friends1 = [|"A1"; "A2"; "A3"; "A4"; "A5"|]
 let fTowns1 = [| [|"A1"; "X1"|]; [|"A2"; "X2"|]; [|"A3"; "X3"|]; [|"A4"; "X4"|] |]
