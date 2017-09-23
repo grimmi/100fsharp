@@ -23,14 +23,17 @@
     taken from https://www.codewars.com/kata/564057bc348c7200bd0000ff/train/fsharp
 *)
 
-let thirt m =
-    let remainders = [|1; 10; 9; 12; 3; 4|]
-    // taken from https://stackoverflow.com/questions/8919006/infinite-sequence-with-repeating-elements
-    // we need to repeat the remainders in case the input is longer than remainders
-    let remainderSeq = seq { while true do yield! remainders }
-    let pairs = m |> string |> Seq.rev |> Seq.map(string >> int) |> Seq.zip remainderSeq
-    printfn "%O" (pairs |> List.ofSeq)
-    let newM = pairs |> Seq.sumBy(fun (r, d) -> r * d)
-    newM
+let rec thirt m =
+    let remainderSeq = seq { while true do yield! [|1; 10; 9; 12; 3; 4|] }
+    let newRemainder = m 
+                       |> string 
+                       |> Seq.rev 
+                       |> Seq.map(string >> int) 
+                       |> Seq.zip remainderSeq 
+                       |> Seq.sumBy(fun (r, d) -> r * d)
+    
+    match newRemainder = m with
+    |true -> newRemainder
+    |false -> thirt newRemainder
 
 let x = thirt 1234567
