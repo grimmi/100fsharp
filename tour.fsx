@@ -50,9 +50,8 @@
 open System
 
 let distance x1 x2 =
-    //a² + b² = c² -> b² = c² - a²
-    //x2 is the hypotenuse of a right triangle
-    sqrt(abs((pown x2 2) - (pown x1 2)))
+    //x1 and x2 are two sides of a right triangle, one of them the hypotenuse
+    sqrt(abs((pown x1 2) - (pown x2 2)))
 
 let tryFindTown (friendTowns: string[] seq) friend =
     match (friendTowns |> Seq.tryFind(fun f -> f.[0] = friend)) with
@@ -66,14 +65,14 @@ let distanceBetween (distances: Map<string, float>) start destination =
 
 let tour(friends: string[]) (friendTowns: string[][]) (distances: Map<string, float>): int =
    let towns = seq{ yield [|"A0"; "X0"|]; yield! friendTowns }
-   let friendsTown = tryFindTown towns
-   let completeTour = seq { yield "A0"; yield! friends |> Seq.filter(fun f -> match friendsTown f with
+   let townOfFriend = tryFindTown towns
+   let completeTour = seq { yield "A0"; yield! friends |> Seq.filter(fun f -> match townOfFriend f with
                                                                               |None -> false
                                                                               |Some(town) -> distances.ContainsKey town); yield "A0" }
    let getDistance = distanceBetween (distances.Add("X0", 0.))
    completeTour 
    |> Seq.pairwise 
-   |> Seq.sumBy(fun (f1, f2) -> getDistance (friendsTown f1) (friendsTown f2))
+   |> Seq.sumBy(fun (f1, f2) -> getDistance (townOfFriend f1) (townOfFriend f2))
    |> int
 
 let friends1 = [|"A1"; "A2"; "A3"; "A4"; "A5"|]
