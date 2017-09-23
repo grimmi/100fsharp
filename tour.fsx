@@ -49,7 +49,7 @@
 
 open System
 
-let distance (x1: float) (x2: float) =
+let distance x1 x2 =
     //a² + b² = c² -> b² = c² - a²
     //x2 is the hypotenuse of a right triangle
     sqrt((pown x2 2) - (pown x1 2))
@@ -57,7 +57,7 @@ let distance (x1: float) (x2: float) =
 let friendIndex friend =
     (friend |> String.filter Char.IsDigit |> int) - 1
 
-let townOfFriend (friend:string) (friendTowns: string[][]) : string =
+let townOfFriend friend (friendTowns: string[][]) =
     friendTowns.[friend |> friendIndex].[1]
 
 let distanceBetween start destination friendTowns (distances: Map<string, float>) =
