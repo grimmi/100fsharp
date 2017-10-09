@@ -17,13 +17,10 @@ taken from: https://www.codewars.com/kata/5663f5305102699bad000056/train/fsharp
 *)
 
 let mxdiflg(a1: string[]) (a2: string[]) =
-
+    let delta ((s1:string), (s2:string)) = abs(s1.Length - s2.Length)
     match (a1, a2) with
     |([||], _) | (_, [||]) -> None
-    |_ -> a1 
-          |> Seq.collect(fun s1 -> a2 |> Seq.map(fun s2 -> (s1, s2)))    
-          |> Seq.map(fun (s1, s2) -> abs(s1.Length - s2.Length))
-          |> Seq.max |> Some
+    |_ -> Some (a1 |> Seq.collect(fun s1 -> a2 |> Seq.map(fun s2 -> delta (s1,s2))) |> Seq.max)
 
 let s1 = [|"hoqq"; "bbllkw"; "oox"; "ejjuyyy"; "plmiis"; "xxxzgpsssa"; "xxwwkktt"; "znnnnfqknaz"; "qqquuhii"; "dvvvwz"|]
 let s2 = [|"cccooommaaqqoxii"; "gggqaffhhh"; "tttoowwwmmww"|]
