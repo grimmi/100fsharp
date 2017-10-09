@@ -31,4 +31,6 @@ let iterPi epsilon =
                               |> Seq.head
     ((iterations + 1) / 2, myPi * 4.)
 
-let p = iterPi 0.01
+#time
+let p = iterPi 0.000001
+#time

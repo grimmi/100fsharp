@@ -24,6 +24,7 @@
 *)
 
 let rec thirt m =
+    //taken from https://stackoverflow.com/questions/8919006/infinite-sequence-with-repeating-elements
     let remainderSeq = seq { while true do yield! [|1; 10; 9; 12; 3; 4|] }
     let newRemainder = m 
                        |> string 
