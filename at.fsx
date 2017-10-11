@@ -6,8 +6,7 @@
 
 let at k list = 
   match list with
-  |[] -> None
-  |_ when k > ((list |> Seq.length) - 1) -> None
+  |[] |_ when k > ((list |> Seq.length) - 1) -> None
   |_ -> Some(list.[k])
 
-let x = [1;2;3] |> at 3
+let x = [1;2;3] |> at 2
