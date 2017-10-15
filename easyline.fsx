@@ -22,8 +22,7 @@ let easyline (n:int) =
     let rec getpascal line no =
         match no with
         |_ when no = n -> line
-        |_ -> let nextLine = line |> List.pairwise |> List.map(fun (x, y) -> x + y)
-              getpascal ((nextLine |> List.append [line.Head]) @ [line.[line.Length - 1]]) (no + 1)
+        |_ -> getpascal ((line |> List.pairwise |> List.map(fun (x, y) -> x + y) |> List.append [line.Head]) @ [line.[line.Length - 1]]) (no + 1)
 
     let pascalline = getpascal [BigInteger 1] 0
     pascalline |> List.sumBy(fun x -> pown x 2)
