@@ -28,8 +28,7 @@ let easyline (n:int) =
                           |> List.append [line.Head]) 
                           @ [line.[line.Length - 1]]) (no + 1)
 
-    let pascalline = getpascal [BigInteger 1] 0
-    pascalline |> List.sumBy(fun x -> pown x 2)
+    getpascal [BigInteger 1] 0 |> List.sumBy(fun x -> pown x 2)
 
 let p = easyline 50
 printfn "%O" p
