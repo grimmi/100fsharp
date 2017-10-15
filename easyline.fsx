@@ -15,8 +15,6 @@ easyline(4) => 70
 easyline(50) => 100891344545564193334812497256
 *)
 
-open System.Numerics
-
 let easyline (n:int) = 
     
     let rec getpascal line no =
@@ -28,7 +26,7 @@ let easyline (n:int) =
                           |> List.append [line.Head]) 
                           @ [line.[line.Length - 1]]) (no + 1)
 
-    getpascal [BigInteger 1] 0 |> List.sumBy(fun x -> pown x 2)
+    getpascal [1I] 0 |> List.sumBy(fun x -> pown x 2)
 
-let p = easyline 50
+let p = easyline 0
 printfn "%O" p
