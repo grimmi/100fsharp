@@ -35,18 +35,15 @@ There is no example tests. Sorry, the honor may vary from time to time. I apolog
 
 taken from: https://www.codewars.com/kata/58a9cff7ae929e4ad1000050/train/fsharp
 *)
-
+open System
 open System.Net
 open System.Text.RegularExpressions
 
 let GetHonor username =
-    let pattern = "(onor:</b>)([\d]+)";
-    use client = new WebClient()
-    let cwText = client.DownloadString(sprintf "https://www.codewars.com/users/%s" username)
-    let r = Regex(pattern, RegexOptions.IgnoreCase)
+    let matches = (new WebClient()).DownloadString(sprintf "https://www.codewars.com/users/%s" username)
+                  |> Regex("(onor:</b>)([\d,]+)", RegexOptions.IgnoreCase).Matches
+    (matches.Item 0).Groups.[2].Value
+    |> String.filter(Char.IsDigit)
+    |> int
 
-    let matches = r.Matches cwText
-    let group = (matches.Item 0).Groups.[2]
-    group.Value |> int
-
-let x = GetHonor "arlegrim"
+let x = GetHonor "kazk"
