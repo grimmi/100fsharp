@@ -15,6 +15,7 @@ easyline(4) => 70
 easyline(50) => 100891344545564193334812497256
 *)
 
+
 let easyline (n:int) = 
     
     let rec getpascal line no =
@@ -28,5 +29,7 @@ let easyline (n:int) =
 
     getpascal [1I] 0 |> List.sumBy(fun x -> pown x 2)
 
-let p = easyline 0
+#time
+let p = easyline 15000
+#time
 printfn "%O" p
