@@ -18,7 +18,7 @@ open System
 let moveVowel(input:string) = 
 
     let isVowel c =
-        ['a';'e';'i';'o';'u'] |> Seq.exists(fun v -> v = c)
+        ['a';'e';'i';'o';'u'] |> Seq.exists(fun v -> v = Char.ToLower c)
 
     let consonants = input |> String.filter(isVowel >> not)
     let vowels = input |> String.filter(isVowel)
