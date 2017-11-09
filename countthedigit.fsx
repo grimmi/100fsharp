@@ -20,11 +20,9 @@ let nbDig (n:int) (d:int) =
 
     let t = (d |> string).[0]
 
-    [|0 .. n|]
-    |>Array.map(fun x -> pown x 2)
-    |>Array.map string
-    |>Array.map(fun s -> s |> String.filter(fun c -> c = t))
-    |>Array.map String.length
-    |>Array.sum
+    Array.sumBy String.length ([|0 .. n|]
+                                |>Array.map(fun x -> pown x 2)
+                                |>Array.map string
+                                |>Array.map(fun s -> s |> String.filter(fun c -> c = t)))
 
 let x = nbDig 25 1
