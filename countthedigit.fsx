@@ -17,10 +17,10 @@ taken from: https://www.codewars.com/kata/566fc12495810954b1000030/train/fsharp
 *)
 
 let nbDig (n:int) (d:int) = 
+    [|0 .. n|]
+    |>Array.map(fun x -> pown x 2 |> string)                               
+    |>Array.map(fun s -> s |> String.filter((=) (d |> string).[0]))
+    |>Array.sumBy String.length
 
-    Array.sumBy String.length ([|0 .. n|]
-                               |>Array.map(fun x -> pown x 2)
-                               |>Array.map string
-                               |>Array.map(fun s -> s |> String.filter(fun c -> c = (d |> string).[0])))
 
 let x = nbDig 25 1
