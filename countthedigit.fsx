@@ -12,6 +12,8 @@ nb_dig(25, 1):
 the numbers of interest are
 1, 4, 9, 10, 11, 12, 13, 14, 19, 21 which squared are 1, 16, 81, 100, 121, 144, 169, 196, 361, 441
 so there are 11 digits `1` for the squares of numbers between 0 and 25.
+
+taken from: https://www.codewars.com/kata/566fc12495810954b1000030/train/fsharp
 *)
 
 let nbDig (n:int) (d:int) = 
