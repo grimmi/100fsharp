@@ -19,7 +19,6 @@ taken from: https://www.codewars.com/kata/566fc12495810954b1000030/train/fsharp
 let nbDig (n:int) (d:int) = 
 
     let t = (d |> string).[0]
-    printfn "t: %c" t
 
     [|0 .. n|]
     |>Array.map(fun x -> pown x 2)
@@ -28,4 +27,4 @@ let nbDig (n:int) (d:int) =
     |>Array.map String.length
     |>Array.sum
 
-let x = nbDig 10 1
+let x = nbDig 25 1
