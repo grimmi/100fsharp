@@ -21,21 +21,11 @@ let nbDig (n:int) (d:int) =
     let t = (d |> string).[0]
     printfn "t: %c" t
 
-    let powers = [|0 .. n|]
-                 |>Array.map(fun x -> pown x 2)
-    printfn "powers: %A" powers
-    
-    let powerStrings = powers |> Array.map string
-    printfn "powerStrings: %A" powerStrings
-
-    let filteredPowers = powerStrings |> Array.map(fun s -> s |> String.filter(fun c -> c = t))
-    printfn "filteredPowers: %A" filteredPowers
-
-    let filteredLengths = filteredPowers |> Array.map String.length
-    printfn "filteredLengths: %A" filteredLengths
-
-    let powerSum = filteredLengths |> Array.sum
-
-    powerSum
+    [|0 .. n|]
+    |>Array.map(fun x -> pown x 2)
+    |>Array.map string
+    |>Array.map(fun s -> s |> String.filter(fun c -> c = t))
+    |>Array.map String.length
+    |>Array.sum
 
 let x = nbDig 10 1
