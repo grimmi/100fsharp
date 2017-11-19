@@ -11,9 +11,24 @@ persistence 999 = 4 // because 9*9*9 = 729, 7*2*9 = 126,
 
 persistence 4 = 0   // because 4 is already a one-digit number
 
+taken from: https://www.codewars.com/kata/persistent-bugger/train/fsharp
+
 *)
 
-let product (s:string) =
-    s |> Seq.fold(fun c x -> c * (x |> string |> int)) 1
 
-printfn "product: %d" (product "243")
+let persistence n =
+    let input = n |> string
+    let product (s:string) =
+        (s |> Seq.fold(fun c x -> c * (x |> string |> int)) 1) |> string
+
+    if String.length input = 1 then 0
+    else
+        let rec per input =
+            match product input with
+            |prod when String.length prod = 1 -> 1
+            |prod -> 1 + per prod 
+        
+        per input
+
+
+printfn "product: %d" (persistence "4")
